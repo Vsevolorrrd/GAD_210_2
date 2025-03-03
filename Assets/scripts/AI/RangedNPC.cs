@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class RangedNPC : NPC
 {
+    private GameObject target;
+
     [Header("Parameters for ranged combat")]
     public float safeDistance = 5f; // Minimum safe distance from the enemy
     public GameObject projectilePrefab;      
@@ -9,7 +11,9 @@ public class RangedNPC : NPC
 
     void Update()
     {
-        GameObject target = FindNearestEnemy();
+        if (target == null)
+        target = FindNearestEnemy();
+
         if (target != null)
         {
             float distance = Vector3.Distance(transform.position, target.transform.position);

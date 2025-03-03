@@ -83,7 +83,7 @@ public class Damageable : MonoBehaviour
         AudioManager.Instance.PlaySound(deathSound, 1f, transform);
         if (Remains != null)
         Instantiate(Remains, gameObject.transform.position, Quaternion.identity);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
     protected IEnumerator Blink()
     {
