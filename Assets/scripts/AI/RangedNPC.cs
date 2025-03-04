@@ -3,6 +3,7 @@ using UnityEngine;
 public class RangedNPC : NPC
 {
     private GameObject target;
+    public AudioClip shot;
 
     [Header("Parameters for ranged combat")]
     public float safeDistance = 5f; // Minimum safe distance from the enemy
@@ -47,6 +48,8 @@ public class RangedNPC : NPC
     {
         if (projectilePrefab != null && projectileSpawnPoint != null)
         {
+            // AudioManager.Instance.PlaySound(shot);
+
             GameObject proj = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
             Projectile projectile = proj.GetComponent<Projectile>();
             if (projectile != null)

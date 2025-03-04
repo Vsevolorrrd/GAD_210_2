@@ -23,13 +23,6 @@ public class Damageable : MonoBehaviour
     {
         Initialize();
     }
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))// for testing
-        {
-            Damage(20);
-        }
-    }
 
     protected virtual void Initialize()
     {
@@ -62,7 +55,7 @@ public class Damageable : MonoBehaviour
         if (flicker)
         StartCoroutine(Blink());
         if (damageSound)
-        AudioManager.Instance.PlaySound(damageSound, 1f, transform);
+        AudioManager.Instance.PlaySound(damageSound, 0.7f, transform);
     }
 
     public virtual void Heal(float amount)
@@ -80,7 +73,7 @@ public class Damageable : MonoBehaviour
     {
         isDead = true;
         if (deathSound)
-        AudioManager.Instance.PlaySound(deathSound, 1f, transform);
+        AudioManager.Instance.PlaySound(deathSound, 0.7f, transform);
         if (Remains != null)
         Instantiate(Remains, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);

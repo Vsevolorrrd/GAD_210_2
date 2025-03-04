@@ -416,6 +416,7 @@ MonoBehaviour:
   attackDelay: 1
   attackRange: 10
   damage: 20
+  shot: {fileID: 8300000, guid: f9955828365504ca786aa05d0c056c70, type: 3}
   safeDistance: 3
   projectilePrefab: {fileID: 3804831148845360569, guid: eadcb79d44b0849f9955547a06791764, type: 3}
   projectileSpawnPoint: {fileID: 5868488454795161700}

@@ -52,26 +52,30 @@ public class Spawn : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
         return; // Do nothing if the mouse is over the UI
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButton(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if(Physics.Raycast(ray, out hit, 100f, environmentLayer))
+            pressTime += Time.deltaTime;
+            if(pressTime > 0.1f)
             {
-                Vector3 spawnPosition = hit.point;
-                Instantiate(spawnEffect, spawnPosition, Quaternion.identity);
-                GameObject melee = Instantiate(meleePrefab, spawnPosition, Quaternion.identity);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
 
-                NPC npcComponent = melee.GetComponent<NPC>();
-                if(npcComponent != null)
+                if(Physics.Raycast(ray, out hit, 200f, environmentLayer))
                 {
-                    npcComponent.faction = selectedFaction;
+                    Vector3 spawnPosition = hit.point;
+                    Instantiate(spawnEffect, spawnPosition, Quaternion.identity);
+                    GameObject melee = Instantiate(meleePrefab, spawnPosition, Quaternion.identity);
+
+                    NPC npcComponent = melee.GetComponent<NPC>();
+                    if(npcComponent != null)
+                    {
+                        npcComponent.faction = selectedFaction;
+                    }
+
+                    MaterialSwitch(melee);
                 }
-
-                MaterialSwitch(melee);
+                pressTime = 0f;
             }
-
         }
     }
     
@@ -80,16 +84,12 @@ public class Spawn : MonoBehaviour
         if(Input.GetMouseButton(1))
         {
             pressTime += Time.deltaTime;
-        }
-
-        if(Input.GetMouseButtonUp(1))
-        {
-            if(pressTime < 0.5f)
+            if(pressTime > 0.1f)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 
-                if(Physics.Raycast(ray, out hit, 100f, environmentLayer))
+                if(Physics.Raycast(ray, out hit, 200f, environmentLayer))
                 {
                     Vector3 spawnPosition = hit.point;
                     Instantiate(spawnEffect, spawnPosition, Quaternion.identity);
@@ -103,8 +103,8 @@ public class Spawn : MonoBehaviour
 
                     MaterialSwitch(range);
                 }
+                pressTime = 0f;
             }
-            pressTime = 0;
         }
     }
 
