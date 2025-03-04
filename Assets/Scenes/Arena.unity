@@ -295,6 +295,7 @@ MonoBehaviour:
   faction1Material: {fileID: 2100000, guid: 4d8c191c0fe914009bfc3f97ee77dfd2, type: 2}
   faction2Material: {fileID: 2100000, guid: 8a973cdea699e7047afa3ed23579611a, type: 2}
   faction3Material: {fileID: 2100000, guid: 4ee9ec2a48eaa4ea0ab05cf608148185, type: 2}
+  pressTime: 0
 --- !u!4 &75193605
 Transform:
   m_ObjectHideFlags: 0
@@ -1076,6 +1077,7 @@ GameObject:
   - component: {fileID: 1797189694}
   - component: {fileID: 1797189693}
   - component: {fileID: 1797189696}
+  - component: {fileID: 1797189697}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1201,6 +1203,21 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &1797189697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797189692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2097d0481746f45cf88f5845631a3086, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navigationSpeed: 2.4
+  shiftMultiplier: 2
+  sensitivity: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

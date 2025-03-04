@@ -11,6 +11,8 @@ public class Spawn : MonoBehaviour
     [SerializeField] private Material faction2Material;
     [SerializeField] private Material faction3Material;
 
+    public float pressTime = 0;
+
     void Start()
     {
         
@@ -42,7 +44,7 @@ public class Spawn : MonoBehaviour
 
     public void MeleeSpawn()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonUp(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -67,25 +69,34 @@ public class Spawn : MonoBehaviour
     
     public void RangeSpawn()
     {
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButton(1))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            pressTime += Time.deltaTime;
+        }
 
-            if(Physics.Raycast(ray, out hit, 100f, environmentLayer))
+        if(Input.GetMouseButtonUp(1))
+        {
+            if(pressTime < 0.5f)
             {
-                Vector3 spawnPosition = hit.point;
-                Instantiate(spawnEffect, spawnPosition, Quaternion.identity);
-                GameObject range = Instantiate(rangePrefab, spawnPosition, Quaternion.identity);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
 
-                NPC npcComponent = range.GetComponent<NPC>();
-                if(npcComponent != null)
+                if(Physics.Raycast(ray, out hit, 100f, environmentLayer))
                 {
-                    npcComponent.faction = selectedFaction;
-                }
+                    Vector3 spawnPosition = hit.point;
+                    Instantiate(spawnEffect, spawnPosition, Quaternion.identity);
+                    GameObject range = Instantiate(rangePrefab, spawnPosition, Quaternion.identity);
 
-                MaterialSwitch(range);
+                    NPC npcComponent = range.GetComponent<NPC>();
+                    if(npcComponent != null)
+                    {
+                        npcComponent.faction = selectedFaction;
+                    }
+
+                    MaterialSwitch(range);
+                }
             }
+            pressTime = 0;
         }
     }
 
