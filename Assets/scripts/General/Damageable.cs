@@ -93,6 +93,9 @@ public class Damageable : MonoBehaviour
         Material mat = meshRenderer.material;
         Color originalColor = mat.color;
 
+        // Ensure the start color is the original color
+        mat.color = originalColor;
+
         float blinkDuration = 0.25f;
         float lerpTime = 0f;
         mat.color = Color.white * 2f;

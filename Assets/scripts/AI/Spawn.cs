@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Spawn : MonoBehaviour
 {
@@ -30,21 +31,28 @@ public class Spawn : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selectedFaction = Faction.Faction1;
+            ChangeFaction(Faction.Faction1);
         }
         if(Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selectedFaction = Faction.Faction2;
+            ChangeFaction(Faction.Faction2);
         }
         if(Input.GetKeyDown(KeyCode.Alpha3))
         {
-            selectedFaction = Faction.Faction3;
+            ChangeFaction(Faction.Faction3);
         }
+    }
+    public void ChangeFaction(Faction faction)
+    {
+        selectedFaction = faction;
     }
 
     public void MeleeSpawn()
     {
-        if(Input.GetMouseButtonUp(0))
+        if (EventSystem.current.IsPointerOverGameObject())
+        return; // Do nothing if the mouse is over the UI
+
+        if (Input.GetMouseButtonUp(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
