@@ -11,15 +11,11 @@ public class Spawn : MonoBehaviour
     [SerializeField] private Material faction1Material;
     [SerializeField] private Material faction2Material;
     [SerializeField] private Material faction3Material;
+    [SerializeField] private GameObject[] factionButtonsOverlay;
 
     public float pressTime = 0;
 
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
         SetFaction();
@@ -44,7 +40,15 @@ public class Spawn : MonoBehaviour
     }
     public void ChangeFaction(Faction faction)
     {
+        // Disable all faction overlays
+        foreach (var overlay in factionButtonsOverlay)
+        overlay.SetActive(false);
+
         selectedFaction = faction;
+
+        int factionIndex = (int)faction;
+        if (factionIndex >= 0 && factionIndex < factionButtonsOverlay.Length)
+        factionButtonsOverlay[factionIndex].SetActive(true);
     }
 
     public void MeleeSpawn()
