@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour {
     }
 
     void Update () {
-        if(Input.GetMouseButton(2)) {
+        if(Input.GetMouseButton(1)) {
             Vector3 move = Vector3.zero;
             float speed = navigationSpeed * (Input.GetKey(KeyCode.LeftShift) ? shiftMultiplier : 1f) * Time.deltaTime * 8f;
             if(Input.GetKey(KeyCode.W))
@@ -32,11 +32,11 @@ public class CameraController : MonoBehaviour {
             transform.Translate(move);
         }
 
-        if(Input.GetMouseButtonDown(2)) {
+        if(Input.GetMouseButtonDown(1)) {
             anchorPoint = new Vector3(Input.mousePosition.y, -Input.mousePosition.x);
             anchorRot = transform.rotation;
         }
-        if(Input.GetMouseButton(2)) {
+        if(Input.GetMouseButton(1)) {
             Quaternion rot = anchorRot;
 
             Vector3 dif = anchorPoint - new Vector3(Input.mousePosition.y, -Input.mousePosition.x);

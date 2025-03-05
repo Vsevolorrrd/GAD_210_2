@@ -412,14 +412,15 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 025210b2710127444b8729351afbf9cf, type: 3}
   faction: 0
   moveSpeed: 1.5
-  rotationSpeed: 5
+  rotationSpeed: 4
   attackDelay: 1
-  attackRange: 10
+  attackRange: 15
   damage: 20
   shot: {fileID: 8300000, guid: f9955828365504ca786aa05d0c056c70, type: 3}
   safeDistance: 3
   projectilePrefab: {fileID: 3804831148845360569, guid: eadcb79d44b0849f9955547a06791764, type: 3}
   projectileSpawnPoint: {fileID: 5868488454795161700}
+  checkInterval: 5
 --- !u!33 &7537283239757767169
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -550,7 +551,7 @@ Transform:
   m_GameObject: {fileID: 4839293411310614719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.012, z: 0.835}
+  m_LocalPosition: {x: 0, y: 0.012, z: 0.82}
   m_LocalScale: {x: 0.07321471, y: 0.21004365, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

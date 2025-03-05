@@ -4,10 +4,19 @@ public class MeleeNPC : NPC
 {
     private GameObject target;
     [SerializeField] Animator anim;
+
+    [Header("Search for enemy")]
+    [SerializeField] private float checkInterval = 5f;
+    private float checkTimer = 0f;
     void Update()
     {
-        if (target == null)
-        target = FindNearestEnemy();
+        checkTimer += Time.deltaTime;
+
+        if (target == null || checkTimer >= checkInterval)
+        {
+            target = FindNearestEnemy();
+            checkTimer = 0f;
+        }
 
         if (target != null)
         {

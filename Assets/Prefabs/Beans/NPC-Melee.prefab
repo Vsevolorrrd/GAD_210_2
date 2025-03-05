@@ -170,11 +170,12 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 025210b2710127444b8729351afbf9cf, type: 3}
   faction: 0
   moveSpeed: 3
-  rotationSpeed: 5
+  rotationSpeed: 4
   attackDelay: 1
   attackRange: 2
   damage: 20
   anim: {fileID: 7235172425659490118}
+  checkInterval: 5
 --- !u!33 &5741778581313343199
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -8,12 +8,21 @@ public class RangedNPC : NPC
     [Header("Parameters for ranged combat")]
     public float safeDistance = 5f; // Minimum safe distance from the enemy
     public GameObject projectilePrefab;      
-    public Transform projectileSpawnPoint;  
+    public Transform projectileSpawnPoint;
+
+    [Header("Search for enemy")]
+    [SerializeField] private float checkInterval = 5f;
+    private float checkTimer = 0f;
 
     void Update()
     {
-        if (target == null)
-        target = FindNearestEnemy();
+        checkTimer += Time.deltaTime;
+
+        if (target == null || checkTimer >= checkInterval)
+        {
+            target = FindNearestEnemy();
+            checkTimer = 0f;
+        }
 
         if (target != null)
         {

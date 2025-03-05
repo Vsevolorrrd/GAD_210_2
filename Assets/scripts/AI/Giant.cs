@@ -9,10 +9,20 @@ public class Giant : NPC
     [SerializeField] float pushForce = 10f;
     [SerializeField] float pushUpwardModifier = 1f;
     [SerializeField] LayerMask enemyLayer;
+
+    [Header("Search for enemy")]
+    [SerializeField] private float checkInterval = 5f;
+    private float checkTimer = 0f;
+
     void Update()
     {
-        if (target == null)
-        target = FindNearestEnemy();
+        checkTimer += Time.deltaTime;
+
+        if (target == null || checkTimer >= checkInterval)
+        {
+            target = FindNearestEnemy();
+            checkTimer = 0f;
+        }
 
         if (target != null)
         {
@@ -51,6 +61,10 @@ public class Giant : NPC
             Damageable damageable = enemy.GetComponent<Damageable>();
             if (damageable != null)
             damageable.Damage(damage);
+
+
+            if (enemy.GetComponent<Giant>() != null)
+            continue; // don't damage yourself
 
             // Apply knockback force if the enemy has a Rigidbody
             Rigidbody rb = enemy.GetComponent<Rigidbody>();

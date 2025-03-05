@@ -8,6 +8,7 @@ public class Damageable : MonoBehaviour
     [SerializeField] float maxHealth = 100f;
     [SerializeField] bool isVulnerable = true;
     private bool isDead = false;
+    private bool isBlinking = false; // Prevents multiple calls
 
     [Header("Visual Effects")]
     [SerializeField] bool flicker = true;
@@ -52,7 +53,7 @@ public class Damageable : MonoBehaviour
 
         if (damageEffect)
         damageEffect.Play();
-        if (flicker)
+        if (flicker && !isBlinking)
         StartCoroutine(Blink());
         if (damageSound)
         AudioManager.Instance.PlaySound(damageSound, 0.7f, transform);
@@ -81,26 +82,27 @@ public class Damageable : MonoBehaviour
     protected IEnumerator Blink()
     {
         if (meshRenderer == null || !meshRenderer.material.HasProperty("_Color"))
-        yield break;
+            yield break;
+
+        isBlinking = true; // Prevents multiple calls
 
         Material mat = meshRenderer.material;
         Color originalColor = mat.color;
-
-        // Ensure the start color is the original color
-        mat.color = originalColor;
+        Color flashColor = Color.white * 2f;
 
         float blinkDuration = 0.25f;
-        float lerpTime = 0f;
-        mat.color = Color.white * 2f;
+        float elapsedTime = 0f;
 
-        while (lerpTime < blinkDuration)
+        mat.color = flashColor;
+
+        while (elapsedTime < blinkDuration)
         {
-            lerpTime += Time.deltaTime;
-            mat.color = Color.Lerp(Color.white * 2f, originalColor, lerpTime / blinkDuration);
+            elapsedTime += Time.deltaTime;
+            mat.color = Color.Lerp(flashColor, originalColor, elapsedTime / blinkDuration);
             yield return null;
         }
 
-        // Ensure the final color is the original color
-        mat.color = originalColor;
+        mat.color = originalColor; // Ensure final reset
+        isBlinking = false; // Allows new calls
     }
 }

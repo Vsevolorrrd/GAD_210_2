@@ -3,40 +3,44 @@ using UnityEngine.EventSystems;
 
 public class Spawn : MonoBehaviour
 {
+
     [SerializeField] private GameObject spawnEffect;
     [SerializeField] private GameObject meleePrefab;
     [SerializeField] private GameObject rangePrefab;
+    [SerializeField] private GameObject giantPrefab;
+
     [SerializeField] private Faction selectedFaction = Faction.Faction1;
+    [SerializeField] private UnitType selectedUnit = UnitType.Melee;
     [SerializeField] private LayerMask environmentLayer;
+
     [SerializeField] private Material faction1Material;
     [SerializeField] private Material faction2Material;
     [SerializeField] private Material faction3Material;
+
     [SerializeField] private GameObject[] factionButtonsOverlay;
+    [SerializeField] private GameObject[] unitButtonsOverlay;
 
     public float pressTime = 0;
 
 
     void Update()
     {
+        Spawning();
         SetFaction();
-        MeleeSpawn();
-        RangeSpawn();
+        SetUnit();
     }
 
     public void SetFaction()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ChangeFaction(Faction.Faction1);
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ChangeFaction(Faction.Faction2);
-        }
-        if(Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            ChangeFaction(Faction.Faction3);
-        }
+        if(Input.GetKeyDown(KeyCode.Alpha1)) ChangeFaction(Faction.Faction1);
+        if(Input.GetKeyDown(KeyCode.Alpha2)) ChangeFaction(Faction.Faction2);
+        if(Input.GetKeyDown(KeyCode.Alpha3)) ChangeFaction(Faction.Faction3);
+    }
+    private void SetUnit()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)) ChangeUnit(UnitType.Melee);
+        if (Input.GetKeyDown(KeyCode.W)) ChangeUnit(UnitType.Ranged);
+        if (Input.GetKeyDown(KeyCode.E)) ChangeUnit(UnitType.Giant);
     }
     public void ChangeFaction(Faction faction)
     {
@@ -51,64 +55,61 @@ public class Spawn : MonoBehaviour
         factionButtonsOverlay[factionIndex].SetActive(true);
     }
 
-    public void MeleeSpawn()
+    public void ChangeUnit(UnitType unit)
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-        return; // Do nothing if the mouse is over the UI
+        // Disable all unit overlays
+        foreach (var overlay in unitButtonsOverlay) overlay.SetActive(false);
 
-        if (Input.GetMouseButton(0))
+        selectedUnit = unit;
+
+        int unitIndex = (int)unit;
+        if (unitIndex >= 0 && unitIndex < unitButtonsOverlay.Length)
+        unitButtonsOverlay[unitIndex].SetActive(true);
+    }
+
+    private void Spawning()
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) return; // Prevent clicking through UI
+
+        if (Input.GetMouseButton(0)) // Left-click to spawn
         {
             pressTime += Time.deltaTime;
-            if(pressTime > 0.1f)
+            if (pressTime > 0.1f)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if(Physics.Raycast(ray, out hit, 200f, environmentLayer))
-                {
-                    Vector3 spawnPosition = hit.point;
-                    Instantiate(spawnEffect, spawnPosition, Quaternion.identity);
-                    GameObject melee = Instantiate(meleePrefab, spawnPosition, Quaternion.identity);
-
-                    NPC npcComponent = melee.GetComponent<NPC>();
-                    if(npcComponent != null)
-                    {
-                        npcComponent.faction = selectedFaction;
-                    }
-
-                    MaterialSwitch(melee);
-                }
+                SpawnUnit();
                 pressTime = 0f;
             }
         }
     }
-    
-    public void RangeSpawn()
+    private void SpawnUnit()
     {
-        if(Input.GetMouseButton(1))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 200f, environmentLayer))
         {
-            pressTime += Time.deltaTime;
-            if(pressTime > 0.1f)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
+            Vector3 spawnPosition = hit.point;
+            Instantiate(spawnEffect, spawnPosition, Quaternion.identity);
 
-                if(Physics.Raycast(ray, out hit, 200f, environmentLayer))
-                {
-                    Vector3 spawnPosition = hit.point;
-                    Instantiate(spawnEffect, spawnPosition, Quaternion.identity);
-                    GameObject range = Instantiate(rangePrefab, spawnPosition, Quaternion.identity);
+            GameObject unitPrefab = GetUnitPrefab();
+            if (unitPrefab == null) return;
 
-                    NPC npcComponent = range.GetComponent<NPC>();
-                    if(npcComponent != null)
-                    {
-                        npcComponent.faction = selectedFaction;
-                    }
+            GameObject unit = Instantiate(unitPrefab, spawnPosition, Quaternion.identity);
+            NPC npcComponent = unit.GetComponent<NPC>();
 
-                    MaterialSwitch(range);
-                }
-                pressTime = 0f;
-            }
+            if (npcComponent != null)
+            npcComponent.faction = selectedFaction;
+
+            MaterialSwitch(unit);
+        }
+    }
+    
+    private GameObject GetUnitPrefab()
+    {
+        switch (selectedUnit)
+        {
+            case UnitType.Melee: return meleePrefab;
+            case UnitType.Ranged: return rangePrefab;
+            case UnitType.Giant: return giantPrefab;
+            default: return null;
         }
     }
 
@@ -131,4 +132,10 @@ public class Spawn : MonoBehaviour
                     }
                 }
     }
+}
+public enum UnitType
+{
+    Melee,
+    Ranged,
+    Giant
 }
