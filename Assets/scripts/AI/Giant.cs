@@ -9,13 +9,20 @@ public class Giant : NPC
     [SerializeField] float pushForce = 10f;
     [SerializeField] float pushUpwardModifier = 1f;
     [SerializeField] LayerMask enemyLayer;
+    [SerializeField] ParticleSystem giantEffect;
 
     [Header("Search for enemy")]
     [SerializeField] private float checkInterval = 5f;
     private float checkTimer = 0f;
 
+    [Header("Fall")]
+    public float fallThresholdY = -100f;
+
     void Update()
     {
+        if (transform.position.y < fallThresholdY)
+        Die(); // kills enemy if it falls of map
+
         checkTimer += Time.deltaTime;
 
         if (target == null || checkTimer >= checkInterval)
@@ -79,5 +86,7 @@ public class Giant : NPC
     private void AttackDelay() // so that attack is in sync with animation
     {
         AreaAttack();
+        if (giantEffect)
+        giantEffect.Play();
     }
 }

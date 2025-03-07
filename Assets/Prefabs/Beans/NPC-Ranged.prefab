@@ -420,7 +420,7 @@ MonoBehaviour:
   safeDistance: 3
   projectilePrefab: {fileID: 3804831148845360569, guid: eadcb79d44b0849f9955547a06791764, type: 3}
   projectileSpawnPoint: {fileID: 5868488454795161700}
-  checkInterval: 5
+  checkInterval: 3
 --- !u!33 &7537283239757767169
 MeshFilter:
   m_ObjectHideFlags: 0

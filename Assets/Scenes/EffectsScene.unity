@@ -141,6 +141,10 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2975915131295358522, guid: 5e83d95a2aebde94f84a791a79958cc5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3688106229147379278, guid: 5e83d95a2aebde94f84a791a79958cc5, type: 3}
       propertyPath: m_Name
       value: Blood
@@ -1004,7 +1008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1807300403
 Transform:
   m_ObjectHideFlags: 0

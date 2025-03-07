@@ -8,8 +8,14 @@ public class MeleeNPC : NPC
     [Header("Search for enemy")]
     [SerializeField] private float checkInterval = 5f;
     private float checkTimer = 0f;
+
+    [Header("Fall")]
+    public float fallThresholdY = -100f;
     void Update()
     {
+        if (transform.position.y < fallThresholdY)
+        Die(); // kills enemy if it falls of map
+
         checkTimer += Time.deltaTime;
 
         if (target == null || checkTimer >= checkInterval)

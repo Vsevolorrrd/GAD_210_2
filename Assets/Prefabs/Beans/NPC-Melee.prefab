@@ -175,7 +175,7 @@ MonoBehaviour:
   attackRange: 2
   damage: 20
   anim: {fileID: 7235172425659490118}
-  checkInterval: 5
+  checkInterval: 3
 --- !u!33 &5741778581313343199
 MeshFilter:
   m_ObjectHideFlags: 0
