@@ -1,8 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] AudioSource soundFXPrefab;
+    [SerializeField] int maxSoundsPlaying = 25;
+    private int currentSoundsPlaying = 0;
 
     private static AudioManager _instance;
     #region Singleton
@@ -22,6 +25,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(AudioClip audioClip, float volume = 1, Transform spawn = null)
     {
+        if (currentSoundsPlaying >= maxSoundsPlaying)
+        return;  // Do not play the sound if the limit is exceeded
+
         if (spawn == null)
         spawn = transform; // Default to this object's transform
         AudioSource audioSource = Instantiate(soundFXPrefab, spawn.position, Quaternion.identity);
@@ -30,7 +36,16 @@ public class AudioManager : MonoBehaviour
         audioSource.volume = volume;
         audioSource.Play();
 
+        currentSoundsPlaying++;
+
         float clipLength = audioSource.clip.length;
-        Destroy(audioSource.gameObject, clipLength);
+        StartCoroutine(DecreaseSoundCount(audioSource, clipLength));
+    }
+
+    private IEnumerator DecreaseSoundCount(AudioSource audioSource, float clipLength)
+    {
+        yield return new WaitForSeconds(clipLength);
+        currentSoundsPlaying--;  // Decrease the count when the sound is finished
+        Destroy(audioSource.gameObject);
     }
 }
