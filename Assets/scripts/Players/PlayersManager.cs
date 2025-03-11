@@ -20,6 +20,10 @@ public class PlayersManager : MonoBehaviour
     public bool competitive;
     public bool waitingForContinue = false;
 
+    public Faction playerOneFaction;
+    public Faction playerTwoFaction;
+
+
 
     private Spawn spawn;
 
@@ -72,6 +76,7 @@ public class PlayersManager : MonoBehaviour
             Debug.Log("Player 1 spent " + cost + ". Balance: " + playerOneMoney);
             if (playerOneMoney < spawn.GetUnitCost(UnitType.Melee))
             {
+                playerOneFaction = spawn.selectedFaction;
                 waitingForContinue = true;
                 continueButton.SetActive(true);
             }
@@ -83,6 +88,7 @@ public class PlayersManager : MonoBehaviour
             Debug.Log("Player 2 spent " + cost + ". Balance: " + playerTwoMoney);
             if (playerTwoMoney <= spawn.GetUnitCost(UnitType.Melee))
             {
+                playerTwoFaction = spawn.selectedFaction;
                 resumeGame.SetActive(true);
             }
         }

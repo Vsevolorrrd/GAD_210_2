@@ -12,7 +12,7 @@ public class Spawn : MonoBehaviour
     [SerializeField] private GameObject rangePrefab;
     [SerializeField] private GameObject giantPrefab;
 
-    [SerializeField] private Faction selectedFaction = Faction.Faction1;
+    [SerializeField] public Faction selectedFaction = Faction.Faction1;
     [SerializeField] private UnitType selectedUnit = UnitType.Melee;
     [SerializeField] private LayerMask environmentLayer;
 
