@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
+using UnityEditor.SearchService;
+using UnityEngine.SceneManagement;
 
 public class Spawn : MonoBehaviour
 {
@@ -20,12 +23,19 @@ public class Spawn : MonoBehaviour
     [SerializeField] private GameObject[] factionButtonsOverlay;
     [SerializeField] private GameObject[] unitButtonsOverlay;
 
-    public float pressTime = 0;
+    PlayersManager battle;
+    public bool factionChosen = false;
 
+    public float pressTime = 0;
+    public event Action<int> OnUnitSpawned;
+    private string sceneName = "Sandbox";
 
     void Update()
     {
-        Spawning();
+        if(sceneName == SceneManager.GetActiveScene().name)
+        {
+            Spawning();
+        }
         SetFaction();
         SetUnit();
     }
@@ -53,6 +63,7 @@ public class Spawn : MonoBehaviour
         int factionIndex = (int)faction;
         if (factionIndex >= 0 && factionIndex < factionButtonsOverlay.Length)
         factionButtonsOverlay[factionIndex].SetActive(true);
+        factionChosen = true;
     }
 
     public void ChangeUnit(UnitType unit)
@@ -67,13 +78,13 @@ public class Spawn : MonoBehaviour
         unitButtonsOverlay[unitIndex].SetActive(true);
     }
 
-    private void Spawning()
+    public void Spawning()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return; // Prevent clicking through UI
 
         if (Input.GetMouseButton(0)) // Left-click to spawn
         {
-            pressTime += Time.deltaTime;
+            pressTime += Time.unscaledDeltaTime;
             if (pressTime > 0.1f)
             {
                 SpawnUnit();
@@ -81,6 +92,26 @@ public class Spawn : MonoBehaviour
             }
         }
     }
+
+    public int GetUnitCost(UnitType unit)
+    {
+        switch (unit)
+        {
+            case UnitType.Melee:
+                return 10;
+            case UnitType.Ranged:
+                return 15;
+            case UnitType.Giant:
+                return 30;
+            default:
+                return 0;
+        }
+    }
+    public int GetCurrentUnitCost()
+    {
+        return GetUnitCost(selectedUnit);
+    }
+
     private void SpawnUnit()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -100,6 +131,8 @@ public class Spawn : MonoBehaviour
 
             MaterialSwitch(unit);
         }
+        int cost = GetUnitCost(selectedUnit);
+        OnUnitSpawned?.Invoke(cost);
     }
     
     private GameObject GetUnitPrefab()
@@ -131,6 +164,12 @@ public class Spawn : MonoBehaviour
                             break;
                     }
                 }
+    }
+
+    public void ResetFaction()
+    {
+        factionChosen = false;
+        ChangeFaction(Faction.Faction1);
     }
 }
 public enum UnitType

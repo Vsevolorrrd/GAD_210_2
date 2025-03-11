@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour {
     void Update () {
         if(Input.GetMouseButton(1)) {
             Vector3 move = Vector3.zero;
-            float speed = navigationSpeed * (Input.GetKey(KeyCode.LeftShift) ? shiftMultiplier : 1f) * Time.deltaTime * 8f;
+            float speed = navigationSpeed * (Input.GetKey(KeyCode.LeftShift) ? shiftMultiplier : 1f) * Time.unscaledDeltaTime * 8f;
             if(Input.GetKey(KeyCode.W))
                 move += Vector3.forward * speed;
             if(Input.GetKey(KeyCode.S))
